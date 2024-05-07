@@ -8,42 +8,41 @@
 </head>
 <body>
     <div class="main">
-        <div id="display">
-            <p>0</p>
-        </div>
+        <input id="display" type="text" placeholder="0">
         <div class="line">
             <button class="button" id="on/off">on/off</button>
             <button class="button" id="C">C</button>
             <button class="button" id="M">M</button>
-            <button class="button" id="/">/</button>
+            <button onclick="operationPress('/')" class="button" id="/">/</button>
         </div>
         <div class="line">
-            <button class="button" id="7">7</button>
-            <button class="button" id="8">8</button>
-            <button class="button" id="9">9</button>
-            <button class="button" id="X">X</button>
+            <button onclick="keyPress(7)" class="button" id="7">7</button>
+            <button onclick="keyPress(8)" class="button" id="8">8</button>
+            <button onclick="keyPress(9)" class="button" id="9">9</button>
+            <button onclick="operationPress('*')" class="button" id="*">x</button>
         </div>
         <div class="line">
-            <button class="button" id="4">4</button>
-            <button class="button" id="5">5</button>
-            <button class="button" id="6">6</button>
-            <button class="button" id="-">-</button>
+            <button onclick="keyPress(4)" class="button" id="4">4</button>
+            <button onclick="keyPress(5)" class="button" id="5">5</button>
+            <button onclick="keyPress(6)" class="button" id="6">6</button>
+            <button onclick="operationPress('-')" class="button" id="-">-</button>
         </div>
         <div id="bottomdiv">
             <div class="bottomdiv2">
                 <div class="line">
-                    <button class="button" id="1">1</button>
-                    <button class="button" id="2">2</button>
-                    <button class="button" id="3">3</button>
+                    <button onclick="keyPress(1)" class="button" id="1">1</button>
+                    <button onclick="keyPress(2)" class="button" id="2">2</button>
+                    <button onclick="keyPress(3)" class="button" id="3">3</button>
                 </div>
                 <div class="line">
-                    <button class="button" id="0">0</button>
-                    <button class="button" id=".">.</button>
+                    <button onclick="keyPress(0)" class="button" id="0">0</button>
+                    <button onclick="keyPress('.')" class="button" id=".">.</button>
                     <button class="button" id="=">=</button>
                 </div>
             </div>
-            <button class="addbutton" id="add">+</button>
+            <button onclick="operationPress('+')" class="addbutton" id="add">+</button>
         </div>
     </div>
 </body>
+<script src="script.js"></script>
 </html>
