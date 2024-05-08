@@ -8,10 +8,10 @@
 </head>
 <body>
     <div class="main">
-        <input id="display" type="text" placeholder="0">
+        <input id="display" type="text" placeholder="">
         <div class="line">
             <button class="button" id="on/off">on/off</button>
-            <button class="button" id="C">C</button>
+            <button onclick="cPress()" class="button" id="C">C</button>
             <button class="button" id="M">M</button>
             <button onclick="operationPress('/')" class="button" id="/">/</button>
         </div>
@@ -37,7 +37,7 @@
                 <div class="line">
                     <button onclick="keyPress(0)" class="button" id="0">0</button>
                     <button onclick="keyPress('.')" class="button" id=".">.</button>
-                    <button class="button" id="=">=</button>
+                    <button onclick="equalsTo()" class="button" id="=">=</button>
                 </div>
             </div>
             <button onclick="operationPress('+')" class="addbutton" id="add">+</button>
