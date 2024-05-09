@@ -1,37 +1,47 @@
 const display = document.getElementById('display');
-const one = document.getElementById('1');
-const c = document.getElementById('C');
 
 let on = 0;
-let currentValue = 0;
 let operation = 0;
-let operationValue = 0;
-let operationSymbol = "";
-let newValue = 0;
+let equals = 0;
+let currentValue = '';
+let operationValue = '';
+let operationSymbol = '';
+let newValue = '';
 
-// botão pra ligar
+// Função pra ligar e desligar
 function onOff() {
 if(on == 0){
     on = 1
     display.placeholder = '0'
-} else {on = 0}
+} else {
+    cPress()
+    on = 0
+    display.placeholder = ''
+    display.value = ''
+}
 }
 
 // botão que reseta
-function cPress() {
-    display.value = 0;
-    currentValue = 0;
-    operation = 0;
-    operationValue = 0;
+function cPress() { if(on == 1){
+    display.value = '';
+    currentValue = '';
+    operation = '';
+    operationValue = '';
+}
 }
 
 // função para escrever os números
-function keyPress(id) {
+function keyPress(id) { if(on == 1){
+if(equals == 1 & operation == 0) {
+    equals = 0
+    cPress()
+}
 if(operation == 0) {
-    newValue = parseFloat(currentValue.toString() + id.toString());
+    newValue = parseFloat(currentValue.toString() + id);
     display.value = newValue;
+    console.log(newValue , id);
 } else {
-    newValue = parseFloat(currentValue.toString());
+    newValue = currentValue.toString();
     console.log(operationValue.toString() , id.toString())
     let newOperationValue = parseFloat(operationValue.toString() + id.toString());
     display.value = newValue.toString() + operationSymbol + newOperationValue.toString();
@@ -39,33 +49,43 @@ if(operation == 0) {
 }
 currentValue = newValue;
 }
+}
 
 // função para fazer operações
-function operationPress(id) {
+function operationPress(id) { if(on == 1){
     if(operation == '1' & operationValue != 0) {
         equalsTo()
     }
     operation = 1;
     operationSymbol = id;
     display.value = currentValue.toString() + operationSymbol;
-    keyPress()
+}
 }
 
 // função para fazer a conta
-function equalsTo() {
+function equalsTo() { if(on == 1){
+if(operationValue !== ''){
     operation = 0;
+    equals = 1;
 if(operationSymbol == '+') {
     newValue = parseFloat(currentValue) + parseFloat(operationValue)
 } else { if(operationSymbol == '-') {
     newValue = parseFloat(currentValue) - parseFloat(operationValue)
 } else { if(operationSymbol == '*') {
     newValue = parseFloat(currentValue) * parseFloat(operationValue)
+} else { if(operationValue === 0) {
+    newValue = 'Error'
 } else {
     newValue = parseFloat(currentValue) / parseFloat(operationValue)
 }
 }
 }
+}
+} else {
+    operationValue = '';
+}
     currentValue = newValue;
     display.value = newValue;
-    operationValue = 0;
+    operationValue = '';
+}
 }

@@ -9,9 +9,10 @@ body {
 }
 
 .main {
-    margin: 30px auto 0;
+    margin: 8% auto;
     background-color: gray;
     width: 40%;
+    min-width: 300px;
     padding: 20px;
     border: solid;
     border-color: rgb(100, 100, 100);
