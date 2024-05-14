@@ -84,10 +84,10 @@ function operationPress(id) { if(on == 1){
     if(equals == 1 & operationSymbol == '√') {
         cPress()
     }
-
     operation = 1;
     operationSymbol = id;
-    display.value = currentValue.toString() + operationSymbol;
+    display.value = newValue.toString() + operationSymbol;
+    currentValue = newValue
 }
 }
 
@@ -124,9 +124,9 @@ if(operationSymbol == '+') {
     operationValue = '';
 }
     currentValue = newValue;
-    display.value = newValue;
+    currentValue = (Math.floor(newValue * 10 ** 10))/10 ** 10
+    display.value = currentValue;
     operationValue = '';
-    display.value = (Math.floor(newValue * 10))/10
 }
 }
 
