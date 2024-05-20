@@ -28,6 +28,7 @@ function cPress() { if(on == 1){
     currentValue = '';
     operation = '';
     operationValue = '';
+    newValue = '';
 }
 }
 
@@ -69,7 +70,7 @@ if(operation == 0) {
     newValue = currentValue.toString();
     console.log(operationValue.toString() , id.toString())
     let newOperationValue = operationValue.toString() + id.toString();
-    display.value = newValue.toString() + operationSymbol + newOperationValue.toString();
+    display.value = currentValue.toString() + operationSymbol + newOperationValue.toString();
     operationValue = newOperationValue;
 }
 currentValue = newValue;
@@ -78,6 +79,12 @@ currentValue = newValue;
 
 // função para fazer operações
 function operationPress(id) { if(on == 1){
+    if(operationSymbol == '-' & currentValue == '') {
+        currentValue = '-'
+    } else { if(operation == 1 & operationValue == '') {
+    operationValue = '-'
+    return}
+
     if(operation == '1' & operationValue != 0) {
         equalsTo()
     }
@@ -88,6 +95,7 @@ function operationPress(id) { if(on == 1){
     operationSymbol = id;
     display.value = newValue.toString() + operationSymbol;
     currentValue = newValue
+}
 }
 }
 
