@@ -68,10 +68,21 @@ body {
 .button:active {
     box-shadow: inset 4px 4px 0 rgb(50, 50, 50);
     font-size: 180%;
+    padding: 5.4px;
 }
 
-#add {
+.addbutton {
     height: 275%;
+    width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+    border: solid;
+    border-color: rgb(100, 100, 100);
+    border-width: 5px;
+    border-radius: 8px;
+    background-color: darkgrey;
+    font-weight: 700;
+    font-size: 200%;
 }
 
 .addbutton:active {
