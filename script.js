@@ -1,4 +1,6 @@
 const display = document.getElementById('display');
+//array de operações
+const operations = [ '+', 'minus', 'over', 'times'] 
 
 let currentValue = ''
 
@@ -20,15 +22,11 @@ function keyPress(id) {
  */
 function stringReader(expression) {
     if(/root\d/.test(expression)) {
-        if(!Number.isNaN(parseFloat(expression.split('root')[1]))) {
+        if(!operations.some((operation) => expression.includes(operation))) {
             expression = expression.replace('root', '')
             console.log(Math.sqrt(parseFloat(expression)))
             return
-        }
-    }
-    if(String(expression).includes('root')) {
-        root(expression)
-        return
+        } else {}
     }
     if(String(expression).startsWith('minus')) {
         expression = expression.replace('minus', '-')
@@ -39,19 +37,21 @@ function stringReader(expression) {
             add(expression)
             return
         }
-        console.log(expression)
+        expression = root(expression, 'minus')
         expression = expression.replace('minus', '-')
-        const [leftNumber, rightNumber] = expression.split('minus')
+        const [leftNumber, rightNumber] = expression.split('-')
         console.log(parseFloat(leftNumber) - parseFloat(rightNumber))
         return
     }
     if(/\dover|overminus\d/.test(expression)) {
+        expression = root(expression, 'over')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('over')
         console.log(parseFloat(leftNumber) / parseFloat(rightNumber))
         return
     }
     if(/\dtimes|timesminus\d/.test(expression)) {
+        expression = root(expression, 'times')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('times')
         console.log(parseFloat(leftNumber) * parseFloat(rightNumber))
@@ -63,15 +63,17 @@ function stringReader(expression) {
 
 // função para somar
 function add(expression) {
-    console.log(expression)
+    expression = root(expression, '+')
     const [leftNumber, rightNumber] = expression.split('+')
     console.log(parseFloat(leftNumber) + parseFloat(rightNumber))
 }
 
-function root(expression) {
-    console.log(expression)
-    expression = expression.replace('root', '')
-    const [leftNumber, rightNumber] = expression.split('+')
-    expression = Math.sqrt(parseFloat(leftNumber)).toString() + '+' + rightNumber.toString()
-    stringReader(expression)
+function root(expression, op) {
+    if(expression.includes('root')) {
+        expression = expression.replace('root', '')
+        const [leftNumber, rightNumber] = expression.split(op)
+        expression = Math.sqrt(parseFloat(leftNumber)).toString() + op.toString() + rightNumber.toString()
+        return expression
+    }
+    return expression
 }
