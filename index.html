@@ -12,11 +12,11 @@
 </head>
 <body>
     <div class="main">
-        <input id="display" type="text" placeholder="" readonly>
+        <input id="display" type="text" placeholder="0" readonly>
         <div class="columns">
             <div class="column">
                 <button class="button" id="on/off">on</button>
-                <button onclick="keyPress(C)" class="button" id="C">C</button>
+                <button onclick="keyPress('c')" class="button" id="C">C</button>
                 <button onclick="keyPress(7)" class="button" value="7" id="7">7</button>
                 <button onclick="keyPress(4)" class="button" value="4" id="4">4</button>
                 <button onclick="keyPress(1)" class="button" value="1" id="1">1</button>
@@ -39,7 +39,7 @@
                 <button onclick="keyPress('=')" class="button" id="=">=</button>
             </div>
             <div class="column">
-                <button class="button" id="on/off">&lt;&lt;</button>
+                <button onclick="keyPress('b')" class="button" id="on/off">&lt;&lt;</button>
                 <button onclick="keyPress('/')" class="button" value="over" id="/">/</button>
                 <button onclick="keyPress('*')" class="button" value="times" id="*">x</button>
                 <button onclick="keyPress('-')" class="button" value="minus" id="-">-</button>

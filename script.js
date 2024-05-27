@@ -4,13 +4,6 @@ const operations = [ '+', 'minus', 'over', 'times', 'powerof']
 
 let currentValue = ''
 
-//função para limpar o display
-function clear() {
-    currentValue = ''
-    expression = ''
-    display.value = ''
-}
-
 //função para digitar algo
 function keyPress(id) {
     if(id === '=') {
@@ -18,13 +11,27 @@ function keyPress(id) {
         return
     }
     if(id === 'c') {
-        clear()
+        display.value = ''
+        currentValue = ''
+        return
+    }
+    if(id === 'b') {
+        backSpace(currentValue)
         return
     }
     display.value += id
-    const value = document.getElementById(id).value; 
-    currentValue += value
+    const thisvalue = document.getElementById(id)?.value; 
+    currentValue += thisvalue
 }
+
+function backSpace(str) {
+    console.log(str)
+    str = str.slice(0, -1)
+    display.value = str
+    currentValue = str
+}
+
+//função para limpar o display
 
 //função para resolver a expressão
 /**
@@ -38,15 +45,27 @@ function stringReader(expression) {
             currentValue = (Math.sqrt(parseFloat(expression)))
             display.value = currentValue
             return
-        } else {}
+        }
     }
-    if(String(expression).startsWith('minus')) {
+    if(String(expression).startsWith('minus') && !/minus\dminus/.test(expression)) {
         expression = expression.replace('minus', '-')
     }
     if(/\dminus|minusminus\d/.test(expression)) {
         if(expression.includes('minusminus')) {
             expression = expression.replace('minusminus', '+')
+            if(/minus\d/.test(expression)) {
+                const [leftNumber, rightNumber] = expression.split('+')
+                expression = rightNumber + '+' + leftNumber
+                expression = expression.replace('minus', '-')
+            }
             add(expression)
+            return
+        }
+        if(/minus\dminus/.test(expression)) {
+            expression = expression.replace('minus', '-')
+            const [leftNumber, rightNumber] = expression.split('minus')
+            currentValue = (parseFloat(leftNumber) - parseFloat(rightNumber))
+            display.value = currentValue
             return
         }
         expression = root(expression, 'minus')
@@ -94,9 +113,19 @@ function add(expression) {
 
 function root(expression, op) {
     if(expression.includes('root')) {
-        expression = expression.replace('root', '')
-        const [leftNumber, rightNumber] = expression.split(op)
-        if(rightNumber)
+        let [leftNumber, rightNumber] = expression.split(op)
+        console.log(leftNumber, rightNumber)
+        if(rightNumber.includes('root')){
+            const eastNumber = rightNumber.replace('root', '')
+            if(leftNumber.includes('root')) {
+                const westNumber = leftNumber.replace('root', '')
+                expression = Math.sqrt(parseFloat(westNumber)).toString() + op.toString() + Math.sqrt(parseFloat(eastNumber)).toString()
+                return expression
+            } 
+            expression = leftNumber.toString() + op.toString() + Math.sqrt(parseFloat(eastNumber)).toString()
+            return expression
+        }
+        leftNumber = leftNumber.replace('root', '')
         expression = Math.sqrt(parseFloat(leftNumber)).toString() + op.toString() + rightNumber.toString()
         return expression
     }
