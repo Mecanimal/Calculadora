@@ -1,11 +1,22 @@
+//consertar bug de subtração com numeros decimais negativos
+
 const display = document.getElementById('display');
 //array de operações
 const operations = [ '+', 'minus', 'over', 'times', 'powerof'] 
 
+let power = 'off'
 let currentValue = ''
+let memory = ''
 
 //função para digitar algo
 function keyPress(id) {
+    if(id === 'toggle') {
+        onoff()
+        return
+    }
+    if(power === 'off') {
+        return
+    }
     if(id === '=') {
         stringReader(currentValue)
         return
@@ -19,13 +30,36 @@ function keyPress(id) {
         backSpace(currentValue)
         return
     }
+    if(id === 'save') {
+        memory = currentValue
+        return
+    }
+    if(id === 'load') {
+        currentValue = currentValue.toString() + memory.toString()
+        display.value = currentValue
+        return
+    }
     display.value += id
     const thisvalue = document.getElementById(id)?.value; 
     currentValue += thisvalue
 }
 
+function onoff() {
+    if(power === 'off') {
+        power = 'on'
+        
+    } else {
+        power = 'off'
+        display.value = ''
+        currentValue = ''
+    }
+}
+
 function backSpace(str) {
-    console.log(str)
+    if(str.length == 0) {
+    display.value = 0
+    return
+    }
     str = str.slice(0, -1)
     display.value = str
     currentValue = str

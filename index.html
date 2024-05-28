@@ -14,8 +14,8 @@
     <div class="main">
         <input id="display" type="text" placeholder="0" readonly>
         <div class="columns">
-            <div class="column">
-                <button class="button" id="on/off">on</button>
+            <div class="column" id="columnone">
+                <button onclick="keyPress('toggle')" class="button" id="on">on/off</button>
                 <button onclick="keyPress('c')" class="button" id="C">C</button>
                 <button onclick="keyPress(7)" class="button" value="7" id="7">7</button>
                 <button onclick="keyPress(4)" class="button" value="4" id="4">4</button>
@@ -23,7 +23,7 @@
                 <button onclick="keyPress(0)" class="button" value="0" id="0">0</button>
             </div>
             <div class="column">
-                <button class="button" id="save">save</button>
+                <button onclick="keyPress('save')" class="button" id="save">save</button>
                 <button onclick="keyPress('√')" class="button" value="root" id="√">√</button>
                 <button onclick="keyPress(8)" class="button" value="8" id="8">8</button>
                 <button onclick="keyPress(5)" class="button" value="5" id="5">5</button>
@@ -31,7 +31,7 @@
                 <button onclick="keyPress('.')" class="button" value="." id=".">.</button>
             </div>
             <div class="column">
-                <button class="button" id="on/off">load</button>
+                <button onclick="keyPress('load')" class="button" id="load">load</button>
                 <button onclick="keyPress('^')" class="button" value="powerof" id="^">^</button>
                 <button onclick="keyPress(9)" class="button" value="9" id="9">9</button>
                 <button onclick="keyPress(6)" class="button" value="6" id="6">6</button>
