@@ -1,4 +1,5 @@
-//consertar bug de subtração com numeros decimais negativos
+//consertar bug de subtração com números decimais negativos
+//consertar bug de multiplicação com número salvo
 
 const display = document.getElementById('display');
 //array de operações
@@ -7,6 +8,8 @@ const operations = [ '+', 'minus', 'over', 'times', 'powerof']
 let power = 'off'
 let currentValue = ''
 let memory = ''
+let currentSymbol= ''
+let currentOperation= ''
 
 //função para digitar algo
 function keyPress(id) {
@@ -35,30 +38,41 @@ function keyPress(id) {
         return
     }
     if(id === 'load') {
-        currentValue = currentValue.toString() + memory.toString()
-        display.value = currentValue
+        let displayShadow = ''
+        const operationMap = {
+            'minus': '-',
+            'over': '/',
+            'times': '*',
+            'powerof': '**'
+        }
+        displayShadow = currentValue.toString() + memory.toString();
+        for (const [writtenForm, symbol] of Object.entries(operationMap)) {
+            display.value = displayShadow.replaceAll(writtenForm, symbol);
+        }
         return
     }
     display.value += id
-    const thisvalue = document.getElementById(id)?.value; 
+    const thisvalue = document.getElementById(id)?.value
     currentValue += thisvalue
 }
 
 function onoff() {
     if(power === 'off') {
         power = 'on'
-        
+        display.placeholder='0'
     } else {
         power = 'off'
+        display.placeholder=''
         display.value = ''
         currentValue = ''
+        memory = ''
     }
 }
 
 function backSpace(str) {
     if(str.length == 0) {
-    display.value = 0
-    return
+        display.value = ''
+        return
     }
     str = str.slice(0, -1)
     display.value = str
@@ -73,11 +87,12 @@ function backSpace(str) {
  * @param {String} expression 
  */
 function stringReader(expression) {
+    let result = ''
     if(/root\d/.test(expression)) {
         if(!operations.some((operation) => expression.includes(operation))) {
             expression = expression.replace('root', '')
-            currentValue = (Math.sqrt(parseFloat(expression)))
-            display.value = currentValue
+            result = (Math.sqrt(parseFloat(expression)))
+            equalsTo(result)
             return
         }
     }
@@ -98,39 +113,39 @@ function stringReader(expression) {
         if(/minus\dminus/.test(expression)) {
             expression = expression.replace('minus', '-')
             const [leftNumber, rightNumber] = expression.split('minus')
-            currentValue = (parseFloat(leftNumber) - parseFloat(rightNumber))
-            display.value = currentValue
+            result = (parseFloat(leftNumber) - parseFloat(rightNumber))
+            equalsTo(result)
             return
         }
-        expression = root(expression, 'minus')
+        expression = root(expression, 'minus', '-')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('-')
-        currentValue = (parseFloat(leftNumber) - parseFloat(rightNumber))
-        display.value = currentValue
+        result = (parseFloat(leftNumber) - parseFloat(rightNumber))
+        equalsTo(result)
         return
     }
     if(/\dover|overminus\d/.test(expression)) {
-        expression = root(expression, 'over')
+        expression = root(expression, 'over', '/')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('over')
-        currentValue = (parseFloat(leftNumber) / parseFloat(rightNumber))
-        display.value = currentValue
+        result = (parseFloat(leftNumber) / parseFloat(rightNumber))
+        equalsTo(result)
         return
     }
     if(/\dtimes|timesminus\d/.test(expression)) {
-        expression = root(expression, 'times')
+        expression = root(expression, 'times', '*')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('times')
-        currentValue = (parseFloat(leftNumber) * parseFloat(rightNumber))
-        display.value = currentValue
+        result = (parseFloat(leftNumber) * parseFloat(rightNumber))
+        equalsTo(result)
         return
     }
     if(/\dpowerof|powerofminus\d/.test(expression)) {
-        expression = root(expression, 'powerof')
+        expression = root(expression, 'powerof', '**')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('powerof')
-        currentValue = (parseFloat(leftNumber) ** parseFloat(rightNumber))
-        display.value = currentValue
+        result = (parseFloat(leftNumber) ** parseFloat(rightNumber))
+        equalsTo(result)
         return
     }
     expression = expression.replace('minus', '-')
@@ -139,13 +154,15 @@ function stringReader(expression) {
 
 //função para somar
 function add(expression) {
-    expression = root(expression, '+')
+    expression = root(expression, '+', '+')
     const [leftNumber, rightNumber] = expression.split('+')
-    currentValue = (parseFloat(leftNumber) + parseFloat(rightNumber))
-    display.value = currentValue
+    result = (parseFloat(leftNumber) + parseFloat(rightNumber))
+    equalsTo(result)
 }
 
-function root(expression, op) {
+function root(expression, op, sy) {
+    currentOperation = op
+    currentSymbol = sy
     if(expression.includes('root')) {
         let [leftNumber, rightNumber] = expression.split(op)
         console.log(leftNumber, rightNumber)
@@ -164,4 +181,13 @@ function root(expression, op) {
         return expression
     }
     return expression
+}
+
+function equalsTo(result) {
+    if(!isNaN(result)) {
+        currentValue = result
+        display.value = currentValue
+    } else {
+
+    }
 }
