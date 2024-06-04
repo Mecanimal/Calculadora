@@ -1,18 +1,24 @@
-//consertar bug de subtração com números decimais negativos
-//consertar bug de multiplicação com número salvo
+//consertar bug de subtração com números decimais negativos!
 
 const display = document.getElementById('display');
-//array de operações
-const operations = [ '+', 'minus', 'over', 'times', 'powerof'] 
+
+//arrays de operações
+const operations = [ '+', 'minus', 'over', 'times', 'powerof']
+const symbols = [ '+', '-', '/', '*', '^']
+const operationMap = {
+    'minus': '-',
+    'over': '/',
+    'times': '*',
+    'powerof': '**'
+}
 
 let power = 'off'
 let currentValue = ''
 let memory = ''
-let currentSymbol= ''
-let currentOperation= ''
 
 //função para digitar algo
 function keyPress(id) {
+    //ligar e desligar
     if(id === 'toggle') {
         onoff()
         return
@@ -20,42 +26,51 @@ function keyPress(id) {
     if(power === 'off') {
         return
     }
+    //função para resolver a expressão
     if(id === '=') {
         stringReader(currentValue)
         return
     }
+    //limpar a tela
     if(id === 'c') {
         display.value = ''
         currentValue = ''
         return
     }
+    //apagar um dígito
     if(id === 'b') {
         backSpace(currentValue)
         return
     }
+    //salvar na memória
     if(id === 'save') {
         memory = currentValue
         return
     }
+    //carregar valor salvo
     if(id === 'load') {
         let displayShadow = ''
-        const operationMap = {
-            'minus': '-',
-            'over': '/',
-            'times': '*',
-            'powerof': '**'
-        }
-        displayShadow = currentValue.toString() + memory.toString();
+        currentValue = currentValue.toString() + memory.toString();
+        displayShadow = currentValue
         for (const [writtenForm, symbol] of Object.entries(operationMap)) {
-            display.value = displayShadow.replaceAll(writtenForm, symbol);
+            displayShadow = displayShadow.replaceAll(writtenForm, symbol);
+            display.value = displayShadow
         }
         return
     }
+    //checar se o bagulho faz aquilo (sla)
+    if(symbols.some((operation) => id == operation)) {
+        if(!currentValue === '') {
+            console.log('Sebastião Marçal')
+        }
+    }
+    //atualizar o valor
     display.value += id
     const thisvalue = document.getElementById(id)?.value
     currentValue += thisvalue
 }
 
+//função para ligar e desligar
 function onoff() {
     if(power === 'off') {
         power = 'on'
@@ -69,17 +84,22 @@ function onoff() {
     }
 }
 
+//função para apagar
 function backSpace(str) {
     if(str.length == 0) {
         display.value = ''
         return
     }
-    str = str.slice(0, -1)
-    display.value = str
-    currentValue = str
+     for (const [writtenForm, symbol] of Object.entries(operationMap)) {
+        str = str.replaceAll(writtenForm, symbol);
+    }
+    str = str.slice(0, -1);
+    display.value = str;
+    for (const [symbol, writtenForm] of Object.entries(operationMap)) {
+        str = str.replaceAll(symbol, writtenForm);
+    }
+    currentValue = str;
 }
-
-//função para limpar o display
 
 //função para resolver a expressão
 /**
@@ -117,7 +137,7 @@ function stringReader(expression) {
             equalsTo(result)
             return
         }
-        expression = root(expression, 'minus', '-')
+        expression = root(expression, 'minus')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('-')
         result = (parseFloat(leftNumber) - parseFloat(rightNumber))
@@ -125,7 +145,7 @@ function stringReader(expression) {
         return
     }
     if(/\dover|overminus\d/.test(expression)) {
-        expression = root(expression, 'over', '/')
+        expression = root(expression, 'over')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('over')
         result = (parseFloat(leftNumber) / parseFloat(rightNumber))
@@ -133,7 +153,7 @@ function stringReader(expression) {
         return
     }
     if(/\dtimes|timesminus\d/.test(expression)) {
-        expression = root(expression, 'times', '*')
+        expression = root(expression, 'times')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('times')
         result = (parseFloat(leftNumber) * parseFloat(rightNumber))
@@ -141,7 +161,7 @@ function stringReader(expression) {
         return
     }
     if(/\dpowerof|powerofminus\d/.test(expression)) {
-        expression = root(expression, 'powerof', '**')
+        expression = root(expression, 'powerof')
         expression = expression.replace('minus', '-')
         const [leftNumber, rightNumber] = expression.split('powerof')
         result = (parseFloat(leftNumber) ** parseFloat(rightNumber))
@@ -154,15 +174,14 @@ function stringReader(expression) {
 
 //função para somar
 function add(expression) {
-    expression = root(expression, '+', '+')
+    expression = root(expression, '+')
     const [leftNumber, rightNumber] = expression.split('+')
     result = (parseFloat(leftNumber) + parseFloat(rightNumber))
     equalsTo(result)
 }
 
-function root(expression, op, sy) {
-    currentOperation = op
-    currentSymbol = sy
+//função para fazer raízes quadradas
+function root(expression, op,) {
     if(expression.includes('root')) {
         let [leftNumber, rightNumber] = expression.split(op)
         console.log(leftNumber, rightNumber)
@@ -183,11 +202,10 @@ function root(expression, op, sy) {
     return expression
 }
 
+//função para permitir o display de um resultado
 function equalsTo(result) {
     if(!isNaN(result)) {
         currentValue = result
         display.value = currentValue
-    } else {
-
     }
 }
