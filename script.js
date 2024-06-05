@@ -1,4 +1,5 @@
 //consertar bug de subtração com números decimais negativos!
+//consertar algum bug na qualidade de vida
 
 const display = document.getElementById('display');
 
@@ -58,10 +59,16 @@ function keyPress(id) {
         }
         return
     }
-    //checar se o bagulho faz aquilo (sla)
-    if(symbols.some((operation) => id == operation)) {
-        if(!currentValue === '') {
-            console.log('Sebastião Marçal')
+    //checar se já tem uma operação em andamento
+    console.log(currentValue)
+    if(symbols.some((symbol) => id == symbol) && !currentValue.length == 0) {
+        let expression = currentValue
+        for (const [writtenForm, symbol] of Object.entries(operationMap)) {
+            expression = expression.replaceAll(writtenForm, symbol);
+            expression = expression.replaceAll('**', '*');
+        }
+        if(/\d\D\d/.test(expression)) {
+        stringReader(currentValue)
         }
     }
     //atualizar o valor
